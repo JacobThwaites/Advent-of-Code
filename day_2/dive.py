@@ -1,5 +1,5 @@
 data = open('directions.txt', 'r')
-directions = data.readLines()
+directions = data.readlines()
 
 horizontal_position = 0
 depth = 0

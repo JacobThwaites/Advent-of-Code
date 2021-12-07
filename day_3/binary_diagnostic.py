@@ -1,5 +1,5 @@
 data = open('data.txt', 'r') 
-binary = data.readLines()
+binary = data.readlines()
 
 occurrences = {}
 for i in range(len(binary[0]) - 1):

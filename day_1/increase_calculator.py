@@ -1,5 +1,5 @@
 report = open('report.txt', 'r')
-lines = report.readLines()
+lines = report.readlines()
 
 prev = int(lines[0])
 total_increases = 0
