@@ -6,14 +6,12 @@ data = filestream.readlines()
 formatter = Formatter()
 numbers_called = formatter.get_numbers_called(data)
 bingo_cards = formatter.get_bingo_cards(data)
-last_num_called = 0
 
 def mark_number(num_called, card):
     for row in card:
         for i in range(len(row)):
             if row[i] == num_called:
                 row[i] = 'called'
-                # return 
 
 def is_card_winner(card):
     if has_complete_row(card) or has_complete_column(card):
@@ -61,4 +59,18 @@ def find_winner():
                 sum_unmarked_nums = calculate_sum_unmarked_nums(card)
                 return num * sum_unmarked_nums
 
-print(find_winner())
+def find_loser(bingo_cards):
+    for num in numbers_called:
+        for card in list(bingo_cards):
+            mark_number(num, card)
+            if is_card_winner(card):
+                if len(bingo_cards) != 1:
+                    bingo_cards.remove(card)
+                else: 
+                    return calculate_sum_unmarked_nums(bingo_cards[0]) * num
+
+
+# print('winner:')
+# print(find_winner())
+# print('loser:')
+print(find_loser(bingo_cards))
