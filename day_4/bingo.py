@@ -64,7 +64,7 @@ def find_loser(bingo_cards):
         for card in list(bingo_cards):
             mark_number(num, card)
             if is_card_winner(card):
-                if len(bingo_cards) != 1:
+                if len(bingo_cards) > 1:
                     bingo_cards.remove(card)
                 else: 
                     return calculate_sum_unmarked_nums(bingo_cards[0]) * num
