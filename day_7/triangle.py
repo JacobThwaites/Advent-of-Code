@@ -2,8 +2,8 @@ class TriangleNumberCalculator():
     def __init__(self):
         self.triangle_numbers = {}
 
-    def calculate_first_2000(self):
-        for i in range(1, 2000):
+    def calculate_first_n(self, n):
+        for i in range(1, n):
             self.calculate(i)
 
     def calculate(self, num):

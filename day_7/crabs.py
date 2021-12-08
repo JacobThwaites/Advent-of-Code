@@ -19,13 +19,14 @@ for c in crabs:
     median_distance += abs(median - c)
 
 triangle_number_calculator = TriangleNumberCalculator()
-triangle_number_calculator.calculate_first_2000()
+triangle_number_calculator.calculate_first_n(max_crab)
 
 min_distance = math.inf
 for i in range(1, max_crab):
     total_distance = 0
     for c in crabs:
-        triangle_distance = triangle_number_calculator.calculate(abs(c - i))
+        distance = abs(c - i)
+        triangle_distance = triangle_number_calculator.calculate(distance)
         total_distance += triangle_distance
     min_distance = min(min_distance, total_distance)
 
