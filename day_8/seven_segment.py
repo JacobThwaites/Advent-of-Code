@@ -33,28 +33,10 @@ for line in lines:
             total_8s += 1    
 
 combined_total = total_1s + total_4s + total_7s + total_8s
-# print(combined_total)
-
-
+print(combined_total)
 
 
 # Part 2
-
-numbers_from_lit = {
-    'abcefg': 0,
-    'cf': 1,
-    'acdeg': 2,
-    'acdfg': 3, 
-    'bcdf': 4,
-    'abdfg': 5,
-    'abdefg': 6,
-    'acf': 7,
-    'abcdefg': 8,
-    'abcdfg': 9
-}
-
-
-first_line = lines[0]['input']
 
 total_from_outputs = 0
 for line in lines:
