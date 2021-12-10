@@ -70,7 +70,7 @@ class LetterFinder():
                 self.letters['f'] = letter
 
     def find_letter_d(self):
-        six_letter_words = self.find_multiple_words_by_length(6) # 0 6 9 
+        six_letter_words = self.find_multiple_words_by_length(6)
         letter_occurences = self.count_letter_occurrences(six_letter_words)
         possible_letters = ['a', 'b', 'c', 'd', 'e','f','g']
         b_and_d = self.find_letter_b_or_d()
