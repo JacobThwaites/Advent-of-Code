@@ -1,4 +1,4 @@
-# Advent-of-Code-2021
+# Advent-of-Code
 
 Answers for https://adventofcode.com/
 
