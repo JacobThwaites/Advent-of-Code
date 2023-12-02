@@ -26,7 +26,7 @@ def get_input():
 
             for reveal in reveals:
                 colours = reveal.split(', ')
-                reveal_counts = {}
+                reveal_counts = dd(int)
                 for c in colours: 
                     s = c.split(' ')
                     reveal_counts[s[1]] = int(s[0])
@@ -49,20 +49,19 @@ for game in input:
     is_possible = True
 
     for colours in reveals:
-        if 'red' in colours and colours['red'] > MAX_RED:
+        if colours['red'] > MAX_RED:
             is_possible = False
             break
-        elif 'blue' in colours and colours['blue'] > MAX_BLUE:  
+        elif colours['blue'] > MAX_BLUE:  
             is_possible = False
             break
-        elif 'green' in colours and colours['green'] > MAX_GREEN:
+        elif colours['green'] > MAX_GREEN:
             is_possible = False
             break
 
     if is_possible:
         invalid_id_sum += game[0]
-# print(invalid_id_sum)
-
+print(invalid_id_sum)
 
 # Part 2
 
@@ -75,12 +74,9 @@ for game in input:
     min_green = 0
     min_red = 0
     for colours in reveals:
-        if 'red' in colours:
-            min_red = max(min_red, colours['red'])
-        if 'blue' in colours:  
-            min_blue = max(min_blue, colours['blue'])
-        if 'green' in colours:
-            min_green = max(min_green, colours['green'])
+        min_red = max(min_red, colours['red'])
+        min_blue = max(min_blue, colours['blue'])
+        min_green = max(min_green, colours['green'])
     
     min_sets += min_red * min_blue * min_green
 
