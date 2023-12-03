@@ -97,7 +97,7 @@ def add_coordinates_number(x, y, gear_coordinates, input):
     if y < len(input[x]) - 1 and input[x][y+1].isnumeric() and (x, y+1) not in gear_coordinates:
         add_coordinates_number(x, y+1, gear_coordinates, input)
 
-def is_adjacent_to_gear(x, y, input):
+def add_gear_adjacencies(x, y, input):
     # Check row above
     if x > 0:
         # 0, 1
@@ -132,7 +132,7 @@ def is_adjacent_to_gear(x, y, input):
 for x, row in enumerate(input):
     for y, val in enumerate(row):
         if val.isnumeric():
-            is_adjacent_to_gear(x, y, input)
+            add_gear_adjacencies(x, y, input)
 
 sum_gear_nums = 0
 
