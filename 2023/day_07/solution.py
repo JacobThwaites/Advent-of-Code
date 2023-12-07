@@ -206,7 +206,7 @@ hand_scores = []
 for hand in input:
     counts = card_counts(hand[0])
     primary_score = get_primary_score(counts)
-    h = {'hand': hand[0], 'bid': hand[1],'score': primary_score, 'secondary': secondary(hand[0])}
+    h = {'hand': hand[0], 'bid': int(hand[1]),'score': primary_score, 'secondary': secondary(hand[0])}
     hand_scores.append(h)
 
 def get_sort_keys(obj):
@@ -217,7 +217,7 @@ sorted_hands = sorted(hand_scores, key=get_sort_keys)
 winnings = 0
 
 for i, s in enumerate(sorted_hands):
-    w = (i+1) * int(s['bid'])
+    w = (i+1) * s['bid']
     winnings += w
 
 print(winnings)
