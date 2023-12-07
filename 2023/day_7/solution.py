@@ -221,6 +221,5 @@ for i, s in enumerate(sorted_hands):
     winnings += w
 
 print(winnings)
-print(253926070 - 253630098)
 # 253926070
 # 253630098
