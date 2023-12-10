@@ -27,7 +27,7 @@ def get_input():
 
 input = get_input()
 
-def get_new_coordinates(char, curr_direction, x, y):
+def get_new_vector(char, curr_direction, x, y):
     if char == '|':
         if curr_direction == 'north':
             return (x-1, y), 'north'
@@ -81,7 +81,7 @@ def get_loop_coordinates(input):
             return path
 
         curr_square = input[x][y]
-        vector = get_new_coordinates(curr_square, direction, x, y)
+        vector = get_new_vector(curr_square, direction, x, y)
 
         if not vector:
             return 
