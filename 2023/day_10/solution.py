@@ -81,12 +81,12 @@ def get_loop_coordinates(input):
             return path
 
         curr_square = input[x][y]
-        res = get_new_coordinates(curr_square, direction, x, y)
+        vector = get_new_coordinates(curr_square, direction, x, y)
 
-        if not res:
+        if not vector:
             return 
         
-        new_coordinates, new_direction = res
+        new_coordinates, new_direction = vector
         path.append(new_coordinates)
 
         return dfs(new_coordinates, new_direction, path)
@@ -110,5 +110,3 @@ print(ceil(len(loop_coordinates) / 2))
 
 # Part 2
 
-
-# print(loop_coordinates)
