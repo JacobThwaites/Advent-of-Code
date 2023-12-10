@@ -67,22 +67,18 @@ def find_start(input):
             if char == 'S':
                 return (x,y)
 
-def get_max_distance(input):
-    distances = [[float('inf') for _ in range(len(input[0]))] for _ in range(len(input))]
 
+def get_loop_coordinates(input):
     start = find_start(input)
 
-    def dfs(coordinates, direction, distance_travelled):
-        nonlocal distances
+    def dfs(coordinates, direction, path):
         x, y = coordinates[0], coordinates[1]
 
         if x < 0 or x >= len(input) or y < 0 or y >= len(input[0]):
             return
         
         if input[x][y] == 'S':
-            return 
-
-        distances[x][y] = min(distances[x][y], distance_travelled)
+            return path
 
         curr_square = input[x][y]
         res = get_new_coordinates(curr_square, direction, x, y)
@@ -91,23 +87,28 @@ def get_max_distance(input):
             return 
         
         new_coordinates, new_direction = res
-        if new_coordinates:
-            dfs(new_coordinates, new_direction, distance_travelled+1)
+        path.append(new_coordinates)
+
+        return dfs(new_coordinates, new_direction, path)
 
 
-    dfs((start[0]-1, start[1]), 'north', 1)
-    dfs((start[0]+1, start[1]), 'south', 1)
-    dfs((start[0], start[1]+1), 'east', 1)
-    dfs((start[0], start[1]-1), 'west', 1)
+    north_path = dfs((start[0]-1, start[1]), 'north', [])
+    if north_path:
+        return north_path
+    south_path = dfs((start[0]+1, start[1]), 'south', [])
+    if south_path:
+        return south_path
+    east_path = dfs((start[0], start[1]+1), 'east', [])
+    if east_path:
+        return east_path
+    west_path = dfs((start[0], start[1]-1), 'west', [])
+    if west_path:
+        return west_path
 
-    mx = 0
+loop_coordinates = get_loop_coordinates(input)
+print(ceil(len(loop_coordinates) / 2))
 
-    for row in distances:
-        for distance in row:
-            if distance != float('inf'):
-                mx = max(mx, distance)
+# Part 2
 
-    return mx
 
-mx = get_max_distance(input)
-print(mx)
+# print(loop_coordinates)
