@@ -14,8 +14,8 @@ mod=1000000007
 
 
 def get_input():
-    # filename = './input.txt'
-    filename ='./test.txt'
+    filename = './input.txt'
+    # filename ='./test.txt'
     with open(filename, 'r') as file: 
         input = []
         for line in file: 
@@ -27,13 +27,6 @@ def get_input():
 
 input = get_input()
 
-id = 1 
-
-for x, row in enumerate(input):
-    for y, col in enumerate(row):
-        if col == '#':
-            input[x][y] = id
-            id += 1
 
 empty_rows = []
 empty_cols = []
@@ -46,7 +39,7 @@ for x, row in enumerate(input):
             break
     
     if is_empty:
-        empty_rows.append(x+1)
+        empty_rows.append(x)
 
 transposed_input = list(zip(*input))
 for y, col in enumerate(transposed_input):
@@ -57,7 +50,7 @@ for y, col in enumerate(transposed_input):
             break
     
     if is_empty:
-        empty_cols.append(y+1)
+        empty_cols.append(y)
 
 # Insert new rows and cols
 def expand_matrix(empty_rows, empty_cols, input):
@@ -88,5 +81,32 @@ for i, c in enumerate(coordinates):
 
 
 # Part 2
-for row in input:
-    print(row)
+
+def get_empty_lines_crossed(start, end):
+    total = 0
+
+    for x in range(min(start[0], end[0]), max(start[0], end[0])):
+        if x in empty_rows:
+            total += 1
+    
+    for y in range(min(start[1], end[1]), max(start[1], end[1])):
+        if y in empty_cols:
+            total += 1
+    
+    return total
+
+
+total = 0
+
+expansion = 1_000_000
+for i, c in enumerate(coordinates):
+    for j in range(i+1, len(coordinates)):
+        pass
+        row_distance = abs(coordinates[j][0] - coordinates[i][0])
+        column_distance = abs(coordinates[j][1] - coordinates[i][1])
+        distance = row_distance + column_distance
+        empty_lines_crossed = get_empty_lines_crossed(coordinates[i], coordinates[j])
+        total_distance = (distance - empty_lines_crossed)+ (empty_lines_crossed * expansion)
+        total += total_distance
+
+print(total)
