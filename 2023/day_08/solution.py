@@ -64,22 +64,36 @@ while not is_end:
                 break
             start = network[start[1]]
 
-# print(steps)
-
-
 # Part 2
 
-nodes_ending_with_a = []
-for n in network.keys():
-    if n[-1] == 'A':
-        nodes_ending_with_a.append(n)
-
-starts = nodes_ending_with_a
-
-while True:
-    distances_to_next_z = []
+a_nodes = [n for n in network if n.endswith('A')]
+distances = []
+for curr in a_nodes:
+    instruction_index = 0
+    first_z = None
     steps = 0
+    distances_to_next_z = []
+    while True:
+        while steps == 0 or not curr.endswith('Z'):
+            steps += 1
+            index = 0 if instructions[instruction_index] == 'L' else 1
+            instruction_index += 1
+            if instruction_index >= len(instructions):
+                instruction_index = 0
+            curr = network[curr][index]
+        
+        distances_to_next_z.append(steps)
+        if not first_z:
+            first_z = curr
+            steps = 0
+        elif curr == first_z:
+            break
+    
+    distances.append(distances_to_next_z)
 
-    while len(distances_to_next_z) > 6:
-        for instruction in instructions:
-            pass
+print(distances)
+
+distances = [d[0] for d in distances]
+
+lcm = math.lcm(*distances)
+print(lcm)
