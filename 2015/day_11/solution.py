@@ -23,43 +23,36 @@ def get_input():
         return input[0]
 
 input = get_input()
-print(input)
 
-def v(s):
-    pair = False
-    sub = False 
-    for i, c in enumerate(s):
-        if c == 'i' or c == 'o' or c == 's':
-            return False 
-        if i < len(s) - 2 and s[i+1] == c:
-            pair = True
-        
-        if i > 1 and ord(s[i-2]) == ord(s[i-1]) - 1 and ord(s[i-1]) == ord(s[i]) - 1:
-            sub = True 
-        
-    return pair and sub
+def count(nums):
+    curr = nums[0]
+    total = 1
+    counts = []
+    for num in nums[1:]:
+        if num == curr:
+            total += 1
+        else:
+            counts.append((curr, total))
+            curr = num
+            total = 1
+    counts.append((curr, total))
+
+    return counts
+
+def say(nums):
+    s = ''
+    for num, count in nums:
+        s += str(count) + num
+
+    return s
+
+def count_and_say(str):
+    c = count(str)
+    return say(c)
 
 s = input
-while True: 
-    print(s)
-    if v(s):
-        print(s)
-        break
 
-    ords = []
-    for c in s:
-        ords.append(ord(c))
-    
-    i = len(ords) - 1
-    ords[i] += 1
-    while i >= 0:
-        if ords[i] > 122:
-            ords[i-1] += ords[i] - 122
-            ords[i] = 97
-            i -= 1
-        else:
-            i = -1
-    
-    s = ''
-    for c in ords:
-        s += chr(c)
+for _ in range(40):
+    s = count_and_say(s)
+
+print(len(s))
