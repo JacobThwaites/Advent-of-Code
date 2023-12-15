@@ -52,7 +52,7 @@ def count_and_say(str):
 
 s = input
 
-for _ in range(40):
+for _ in range(50):
     s = count_and_say(s)
 
 print(len(s))
