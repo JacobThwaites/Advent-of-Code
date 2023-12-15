@@ -35,8 +35,46 @@ def hash(str):
     
     return curr
 
+# total = 0
+# for str in input:
+#     total += hash(str)
+
+# print(total)
+
+
+
+# Part 2 
+
+input = [s.split('=') for s in input]
+
+map = [[] for _ in range(256)]
+
+def add_to_box(input, box):
+    label, num = input
+    for entry in box:
+        if entry[0] == label:
+            entry[1] = num
+            return 
+    
+    box.append([label, num])
+
+for i in input:
+    if len(i) > 1:
+        box = hash(i[0])
+        val = (i[0], int(i[1]))
+        add_to_box(i, map[box])
+    else:
+        label = i[0][:-1]
+        box = hash(label)
+
+        for j, entry in enumerate(map[box]):
+            if entry[0] == label:
+                map[box].pop(j)
+
 total = 0
-for str in input:
-    total += hash(str)
+
+for i, box in enumerate(map):
+    for j, lens in enumerate(box):
+        total += (i+1) * (j+1) * int(lens[1])
 
 print(total)
