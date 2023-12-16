@@ -78,8 +78,7 @@ lasers = [(0,-1, 'right')]
 while len(lasers):
     to_delete = []
     for i, vector in enumerate(lasers):
-        new_coordinates = get_new_coordinates(vector)
-        x, y = new_coordinates
+        x, y, = get_new_coordinates(vector)
 
         if x < 0 or x >= len(input) or y < 0 or y >= len(input[0]):
             to_delete.append(i)
@@ -101,7 +100,7 @@ while len(lasers):
 
     lasers = [laser for i, laser in enumerate(lasers) if i not in to_delete]
 
-# print(len(energised))
+print(len(energised))
 
 # Part 2
 
@@ -113,8 +112,7 @@ def total_energised(starting_vector):
     while len(lasers):
         to_delete = []
         for i, vector in enumerate(lasers):
-            new_coordinates = get_new_coordinates(vector)
-            x, y = new_coordinates
+            x, y = get_new_coordinates(vector)
 
             if x < 0 or x >= len(input) or y < 0 or y >= len(input[0]):
                 to_delete.append(i)
@@ -152,8 +150,6 @@ for x, _ in enumerate(input[0]):
     potential_starts.append(top_start)
     potential_starts.append(bottom_start)
 
-max_energised = 0
-for start in potential_starts:
-    max_energised = max(max_energised, total_energised(start))
+max_energised = max([total_energised(start) for start in potential_starts])
 
 print(max_energised)
