@@ -14,8 +14,8 @@ mod=1000000007
 
 
 def get_input():
-    filename = './input.txt'
-    # filename ='./test.txt'
+    # filename = './input.txt'
+    filename ='./test.txt'
     with open(filename, 'r') as file: 
         input = []
         for line in file: 
