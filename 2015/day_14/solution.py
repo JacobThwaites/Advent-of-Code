@@ -53,4 +53,45 @@ for name, speed, travel_time, rest_time in input:
     distance = get_reindeer_distance(speed, travel_time, rest_time, total_time)
     max_distance = max(max_distance, distance)
 
-print(max_distance)
+# print(max_distance)
+
+# Part 2
+tracker = {}
+leaderboard = {}
+for name, speed, travel_time, rest_time in input:
+    tracker[name] = {
+        'speed': speed, 
+        'travel_time': travel_time, 
+        'rest_time': rest_time,
+        'countdown': travel_time,
+        'is_resting': False,
+        'distance_travelled': 0
+    }
+    leaderboard[name] = 0
+
+for x in range(total_time):
+    leaders = []
+    curr_lead_score = 0
+    for name, reindeer in tracker.items():
+        if not reindeer['is_resting']:
+            reindeer['distance_travelled'] += reindeer['speed']
+        
+        if reindeer['distance_travelled'] == curr_lead_score:
+            leaders.append(name)
+
+        elif reindeer['distance_travelled'] > curr_lead_score:
+            curr_lead_score = reindeer['distance_travelled']
+            leaders = [name]
+        
+        reindeer['countdown'] -= 1
+        if reindeer['countdown'] == 0:
+            reindeer['countdown'] = reindeer['travel_time'] if reindeer['is_resting'] else reindeer['rest_time']
+            reindeer['is_resting'] = not reindeer['is_resting']
+
+    for leader in leaders:
+        leaderboard[leader] += 1
+    
+
+
+highest_score = max(leaderboard.values())
+print(highest_score)
