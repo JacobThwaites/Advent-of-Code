@@ -45,4 +45,21 @@ def count_string_chars(str):
     return string_literal_length - in_memory_length
 
 total = sum([count_string_chars(string) for string in input])
-print(total)
+# print(total)
+
+# Part 2
+
+def encode(string):
+    new = '"'
+
+    for char in string:
+        if char in '"\\':
+            new += '\\' + char
+        else:
+            new += char
+    
+    new += '"'
+    return len(new) - len(string)
+
+total_encoded = sum([encode(string) for string in input])
+print(total_encoded)
