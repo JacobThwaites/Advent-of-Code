@@ -52,9 +52,8 @@ def update_lights(grid):
 
 grid = input
 
-for _ in range(100):
-    grid = update_lights(grid)
-
+# for _ in range(100):
+#     grid = update_lights(grid)
 
 total_on = 0
 
@@ -62,6 +61,36 @@ for x, _ in enumerate(grid):
     for x, val in enumerate(grid[x]):
         total_on += 1 if val == '#' else 0 
 
-print(total_on)
+# print(total_on)
 
 # Part 2
+
+def update_lights_except_corners(grid):
+    new_grid = [['.' for y in range(len(grid[0]))] for _ in range(len(grid))]
+
+    for x, row in enumerate(grid):
+        for y, val in enumerate(grid[x]):
+            neighbours_on = total_neighbours_on(grid, x, y)
+            if (x,y) in [(0, 0), (len(grid) -1, 0), (len(grid) -1, len(grid[x]) - 1), (0, len(grid[x]) - 1)]:
+                new_grid[x][y] = '#'
+            elif val == '#':
+                new_grid[x][y] = '#' if neighbours_on in [2,3] else '.'
+            else:
+                new_grid[x][y] = '#' if neighbours_on == 3 else '.'
+    
+    return new_grid
+
+for _ in range(100):
+    grid = update_lights_except_corners(grid)
+
+    for row in grid:
+        print(''.join(s for s in row))
+    print('')
+    
+total_on = 0
+
+for x, _ in enumerate(grid):
+    for x, val in enumerate(grid[x]):
+        total_on += 1 if val == '#' else 0 
+
+print(total_on)
