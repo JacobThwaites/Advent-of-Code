@@ -55,6 +55,8 @@ def solve(destination):
     elif 'NOT' in value:
         a = value.replace('NOT ', '')
         map[destination] = ~solve(a) & 0xFFFF
+    else:
+        map[destination] = solve(value)
     
     return map[destination]
 
