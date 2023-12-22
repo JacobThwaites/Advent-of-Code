@@ -14,7 +14,9 @@ mod=1000000007
 
 
 def get_input():
-    with open('./input.txt', 'r') as file: 
+    filename = './input.txt'
+    # filename = './test.txt'
+    with open(filename, 'r') as file: 
         input = []
         for line in file: 
             line = line.replace('\n', '')
@@ -24,10 +26,34 @@ def get_input():
         return input 
 
 input = get_input()
-print(input)
+# print(input)
 
 graph = dd(dd)
+locations = {}
 
 for start, end, distance in input:
+    locations[start] = True
+    locations[end] = True
     graph[start][end] = distance
+    graph[end][start] = distance
 
+min_route = float('inf')
+    
+def get_paths(location, distance, visited):
+    global min_route
+    if len(visited) == len(locations):
+        min_route = min(distance, min_route)
+        return
+
+    nodes = graph[location]
+
+    for node in nodes:
+        if node not in visited:
+            visited.append(node)
+            get_paths(node, distance + graph[location][node], visited)
+            visited.pop()
+
+for location in locations:
+    get_paths(location, 0, [location])
+    
+print(min_route)
