@@ -53,7 +53,30 @@ def get_paths(location, distance, visited):
             get_paths(node, distance + graph[location][node], visited)
             visited.pop()
 
+# for location in locations:
+#     get_paths(location, 0, [location])
+    
+# print(min_route)
+
+# Part 2
+
+max_route = float('-inf')
+    
+def get_paths(location, distance, visited):
+    global max_route
+    if len(visited) == len(locations):
+        max_route = max(distance, max_route)
+        return
+
+    nodes = graph[location]
+
+    for node in nodes:
+        if node not in visited:
+            visited.append(node)
+            get_paths(node, distance + graph[location][node], visited)
+            visited.pop()
+
 for location in locations:
     get_paths(location, 0, [location])
     
-print(min_route)
+print(max_route)
