@@ -14,8 +14,8 @@ mod=1000000007
 
 
 def get_input():
-    filename = './input.txt'
-    # filename ='./test.txt'
+    # filename = './input.txt'
+    filename ='./test.txt'
     with open(filename, 'r') as file: 
         input = []
         for line in file: 
@@ -33,6 +33,7 @@ input = get_input()
 max_x, max_y = 0,0
 min_x, min_y = 0,0
 curr = [0,0]
+coordinates = [(0,0)]
 
 for direction, distance, colour in input:
     if direction == 'U':
@@ -43,7 +44,7 @@ for direction, distance, colour in input:
         curr[1] += distance
     elif direction == 'L':
         curr[1] -= distance
-
+    coordinates.append((curr[0], curr[1]))
     max_x = max(max_x, curr[0])
     max_y = max(max_y, curr[1])
     min_x = min(min_x, curr[0])
@@ -114,3 +115,5 @@ for row in grid:
             total += 1
 
 print(total)
+
+# Part 2
