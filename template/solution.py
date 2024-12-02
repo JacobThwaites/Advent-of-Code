@@ -1,7 +1,7 @@
 import sys
 import math
 import bisect
-from math import gcd,floor,sqrt,log
+from math import gcd,floor,sqrt,log, prod
 from collections import defaultdict as dd
 from bisect import bisect_left as bl, bisect_right as br
 
