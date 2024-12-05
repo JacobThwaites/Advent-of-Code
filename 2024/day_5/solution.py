@@ -45,25 +45,12 @@ p1_rules, p2_rules, updates = input
 
 def valid(update, rules):
     invalid = False
-    for i, _ in enumerate(update):
-        if update[i] not in rules:
-            continue
-        not_allowed = rules[update[i]]
-        if not_allowed in update[:i]:
-            invalid = True
-
-    return not invalid
-
-
-def valid(update, rules):
-    invalid = False
     for i, num1 in enumerate(update):
         for j, num2 in enumerate(update):
             if j > i and num2 in rules[num1]:
                 invalid = True
 
     return not invalid
-    
     
 total = 0
 
