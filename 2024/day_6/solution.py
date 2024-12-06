@@ -41,12 +41,15 @@ def find_guard(grid):
 guard_coordinates = find_guard(input)
 starting_coordinates = guard_coordinates
 
+path_coordinates = {}
+
 
 def part_1(guard_coordinates, input):
     in_bounds = True
 
     while in_bounds:
         x,y = guard_coordinates
+        path_coordinates[(x,y)] = True
         if input[x][y] == '^':
             if x == 0:
                 input[x][y] = 'X'
@@ -190,6 +193,9 @@ def check_for_loop(grid, obstruction_x, obstruction_y, guard_coordinates):
 loops = 0
 for x, row in enumerate(input):
     for y, val in enumerate(row):
+        if (x,y) not in path_coordinates:
+            continue
+        
         loop = check_for_loop(deepcopy(input), x, y,
                               guard_coordinates)
         if loop:
