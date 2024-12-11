@@ -128,11 +128,11 @@ def reorder_blocks(diskmap):
     file_size = y-x
     next_space = find_space_by_size(diskmap, file_size, x)
 
-    while x >0:
+    while x > 0:
         if next_space:
             a, b = next_space
             diskmap[a:a+file_size], diskmap[x:y] = diskmap[x:y], diskmap[a:a+file_size]
-        x -=1
+        x -= 1
         x, y = find_next_file(diskmap, x)
         file_size = y-x
         next_space = find_space_by_size(diskmap, file_size, x)
