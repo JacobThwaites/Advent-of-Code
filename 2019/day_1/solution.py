@@ -16,7 +16,7 @@ mod=1000000007
 
 def get_input():
     filename = './input.txt'
-    filename ='./test.txt'
+    # filename ='./test.txt'
     with open(filename, 'r') as file: 
         input = []
         for line in file: 
@@ -26,4 +26,27 @@ def get_input():
         return input 
 
 input = get_input()
-[print(row) for row in input]
+# [print(row) for row in input]
+
+total = 0
+
+for row in input:
+    x = floor(int(row) / 3) - 2
+    total += x
+
+# print(total)
+
+
+# Part 2
+
+def get_fuel(start):
+    if start<= 0:
+        return 0
+    
+    new = max(floor(int(start) / 3) - 2, 0)
+    return new + get_fuel(new)
+
+total = sum([get_fuel(int(m)) for m in input])
+
+print(total)
+        
