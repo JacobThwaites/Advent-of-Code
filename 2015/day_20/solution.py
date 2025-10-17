@@ -16,53 +16,70 @@ mod=1000000007
 def get_input():
     filename = './input.txt'
     # filename ='./test.txt'
-    with open(filename, 'r') as file: 
+    with open(filename, 'r') as file:
         input = []
-        for line in file: 
+        for line in file:
             line = line.replace('\n', '')
             input.append(line)
 
-        return input 
+        return input
 
 input = get_input()
-# print(input)
 
 target = int(input[0])
-print(target)
 
-def total_divisible(n):
+calculated = {}
+
+
+def find_divisors(num):
+    if num in calculated:
+        return calculated[num]
+
+    divisors = []
+    for i in range(1, int(sqrt(num)) + 1):
+        if num % i == 0:
+            divisors.append(i)
+            if i != num // i:
+                divisors.append(num // i)
+
+    calculated[num] = divisors
+    return divisors
+
+
+def calculate_house_total(num):
     total = 0
-    mx = floor(n / 2) + 1
-    
-    for x in range(1, mx):
-        if n % x == 0:
-            total += (x*10)
-    
-    total += n*10
+
+    divisors = find_divisors(num)
+
+    for d in divisors:
+        total += 10 * d
+
     return total
 
-def largest_divisor(target):
-    for i in range(target // 2, 0, -1):
-        if target % i == 0:
-            return i
-    return 1
+# for num in range(1, 100000000):
+#     total = calculate_house_total(num)
 
-def find_target(target):
-    divisible = {}
-    for x in range(1, target):
-        mx = largest_divisor(x)
-        if mx in divisible:
-            # print(x)
-            divisible[x] = divisible[mx] + (x * 10)
-        else:
-            total = x * 10
-            for i in range(1, x // 2):
-                total += i * 10
-            divisible[x] = total
-        
-        if divisible[x] >= target:
-            return x
-    # print(divisible)     
+#     if total >= target:
+#         print(num)
+#         break
 
-solution = find_target(target)
-print(solution)
+
+# Part 2
+
+mx = target // 10
+houses = [0] * (target + 1)
+
+for x in range(1, mx + 1):
+    total_visits = 0
+    for house in range(x, mx + 1, x):
+        if total_visits >= 50:
+            break
+
+        houses[house] += 11 * x
+        total_visits += 1
+
+
+for i, h in enumerate(houses):
+    if h >= target:
+        print(i)
+        break
