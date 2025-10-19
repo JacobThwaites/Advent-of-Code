@@ -17,27 +17,37 @@ mod=1000000007
 def get_input():
     filename = './input.txt'
     # filename ='./test.txt'
-    with open(filename, 'r') as file: 
+    with open(filename, 'r') as file:
         input = []
-        for line in file: 
+        for line in file:
             line = line.replace('\n', '')
             name, scores = line.split(': ')
             scores = scores.split(', ')
 
             input.append((name, scores))
 
-        return input 
+        return input
 
 input = get_input()
 
-ingredients = dd(dd)
+ingredients = {}
 
 for i, scores in input:
+    ingredients[i] = {}
     for score in scores:
         name, val = score.split(' ')
         ingredients[i][name] = int(val)
 
-def make_cookie(ingredient_ratios):
+def get_cookie_score(ingredient_ratios):
+    # calories = 0
+    # for (name, total)  in ingredient_ratios:
+    #     ingredient_calories = ingredients[name]['calories']
+    #     if total > 0:
+    #         calories += total * ingredient_calories
+
+    # if calories != 500:
+    #     return float('inf')
+
     cookie = {
         'capacity': 0,
         'durability': 0,
@@ -45,48 +55,37 @@ def make_cookie(ingredient_ratios):
         'texture': 0,
         'calories': 0
     }
-    score = 1
-    
     for ingredient, ratio in ingredient_ratios:
         for property, value in ingredients[ingredient].items():
             cookie[property] += (ratio * value)
-    
-    # for k, v in cookie.items():
-    #     if v < 0:
-    #         cookie[k] = 0
-            
-    for key, value in cookie.items():
-        if key != "calories":
-            score *= value
-    
+
+    if cookie['calories'] != 500:
+        return 0
+
+    score = 1
+    for key in ['capacity', 'durability', 'flavor', 'texture']:
+        score *= max(0, cookie[key])
+
     return score
 
-remaining = 100
-
-cookies = []
 
 remaining = 100
 max_score = 0
 
-count = 0
+# Use actual ingredient names from input
+names = [i for i, _ in input]
+a_name, b_name, c_name, d_name = names
 
 for a in range(remaining + 1):
     for b in range(remaining - a + 1):
         for c in range(remaining - a - b + 1):
             d = remaining - a - b - c
-            score = make_cookie([
-                ('Sugar', a),
-                ('Sprinkles', b),
-                ('Candy', c),
-                ('Cinnamon', d)
+            score = get_cookie_score([
+                (a_name, a),
+                (b_name, b),
+                (c_name, c),
+                (d_name, d)
             ])
             max_score = max(max_score, score)
 
 print(max_score)
-
-# 129133440 - too high
-# print(make_cookie([('Butterscotch', 44), ('Cinnamon', 56)]))
-
-
-# 15862900 - too high
-# 117936 - too low
