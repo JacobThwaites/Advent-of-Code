@@ -15,60 +15,46 @@ mod=1000000007
 
 def get_input():
     filename = './input.txt'
-    filename ='./test.txt'
-    with open(filename, 'r') as file: 
-        input = []
-        for line in file: 
-            line = line.replace('\n', '')
-            line = line.split(' ')
+    # filename = './test.txt'
+    with open(filename, 'r') as file:
+        instructions = []
+        for line in file:
+            line = line.strip().split()
             if line[0] == 'rect':
-                x, y = line[1].split('x')
-                input.append([line[0], int(x), int(y)])
-                continue
-            
-            input.append([line[0], line[1], int(line[2][2]), int(line[-1])])
+                x, y = map(int, line[1].split('x'))
+                instructions.append(['rect', x, y])
+            else:
+                axis = line[1]
+                index = int(line[2].split('=')[1])
+                distance = int(line[-1])
+                instructions.append(['rotate', axis, index, distance])
+        return instructions
 
-        return input 
 
-input = get_input()
-# [print(row) for row in input]
+instructions = get_input()
 
-screen = [['.' for _ in range(50)] for _ in range(6)]
-screen = [['.' for _ in range(7)] for _ in range(3)]
+screen = [['.' for _ in range(50)] for _ in range(6)]  # actual input
+# screen = [['.' for _ in range(7)] for _ in range(3)]     # test input
 
-for instruction in input:
-    if instruction[0] == 'rect':
-        for y in range(instruction[2]):
-            for x in range(instruction[1]):
+for ins in instructions:
+    if ins[0] == 'rect':
+        _, a, b = ins
+        for y in range(b):
+            for x in range(a):
                 screen[y][x] = '#'
     else:
-        if instruction[1] == 'column':
-            new_on = {}
-            y = instruction[2]
-            distance = instruction[3]
-            for x, row in enumerate(screen):
-                if row[y] == '#':
-                    new_coordinate = (y + distance) % len(screen)
-                    new_on[(x + distance) % len(screen)] = True
-            
-            for x, row in enumerate(screen):
-                screen[x][y] = '#' if x in new_on else '.'
+        _, axis, index, distance = ins
+        if axis == 'column':
+            col = index
+            column_values = [screen[r][col] for r in range(len(screen))]
+            for r in range(len(screen)):
+                screen[(r + distance) % len(screen)][col] = column_values[r]
         else:
-            x = instruction[2]
-            distance = instruction[3]
-            new_on = {}
-            for i, c in enumerate(screen[x]):
-                if c == '#':
-                    new_on[(i + distance) % len(screen[x])] = True
-            
-            for i, c in enumerate(screen[x]):
-                screen[x][i] = '#' if i in new_on else '.'
-    
-total = 0
+            row = index
+            screen[row] = screen[row][-distance:] + screen[row][:-distance]
+
+total = sum(row.count('#') for row in screen)
+print(total)
 
 for row in screen:
-    for val in row: 
-        if val == '#':
-            total += 1
-print(total)
-# 105 - too low
+    print(''.join(row))
