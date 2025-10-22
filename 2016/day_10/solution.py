@@ -15,65 +15,81 @@ mod=1000000007
 
 def get_input():
     filename = './input.txt'
-    filename ='./test.txt'
-    with open(filename, 'r') as file: 
-        input = []
-        for line in file: 
+    # filename ='./test.txt'
+    with open(filename, 'r') as file:
+        starts = []
+        bots = {}
+        for line in file:
             line = line.replace('\n', '')
             line = line.split(' ')
-            instruction = []
+
             if line[0] == 'value':
-                instruction.append(line[0])
-                instruction.append(int(line[1]))
-                instruction.append(line[-2])
-                instruction.append(int(line[-1]))
+                start = {
+                    'bot_id': int(line[-1]),
+                    'value': int(line[1])
+                }
+                starts.append(start)
             else:
-                instruction.append(line[0])
-                instruction.append(int(line[1]))
-                instruction.append(line[3])
-                instruction.append(line[5])
-                instruction.append(int(line[6]))
-                instruction.append(line[8])
-                instruction.append(line[-2])
-                instruction.append(int(line[-1]))
-            input.append(instruction)
+                bot = {
+                    'id': int(line[1]),
+                    'low_receiver_type': line[5],
+                    'low_receiver_id': int(line[6]),
+                    'high_receiver_type': line[-2],
+                    'high_receiver_id': int(line[-1]),
+                    'values': []
+                }
+                bots[int(line[1])] = bot
 
-        return input 
+        return [starts, bots]
 
-input = get_input()
-# [print(row) for row in input]
+starts, bots = get_input()
 
-bots = {}
-bots = dd(list)
-outputs = {}
-for row in input:
-    if row[0] == 'value':
-        bot_id = row[-1]
-        print('bot id' + str(bot_id))
-        if bot_id not in bots:
-            bots[bot_id] = []
-        bots[bot_id].append(row[1])
-        bots[bot_id].sort()
+outputs = dd(list)
+
+for start in starts:
+    id = start['bot_id']
+    val = start['value']
+    bots[id]['values'].append(val)
+
+
+queue = []
+for id, bot in bots.items():
+    if len(bot['values']) > 1:
+        queue.append(id)
+
+
+
+def move_value(receiver_type, id, value):
+    if receiver_type == 'output':
+        outputs[id].append(value)
     else:
-        giver_id = row[1]
-        # if giver_id not in bots:
-        #     bots[giver_id] = []
-        print(bots)
-        print('giver_id: ' + str(giver_id))
-        
-        low = bots[giver_id].pop(0) if row[2] == 'low' else bots[giver_id].pop()
-        high = bots[giver_id].pop()
-        
-        receiver_id = row[4]
-        if row[3] == 'output':
-            if receiver_id not in outputs:
-                outputs[receiver_id] = []
-                
-            outputs[receiver_id].append(low) if row[2] == 'low' else outputs[receiver_id].append(high)
-        else:
-            if receiver_id not in bots:
-                bots[receiver_id] = []
-            bots[receiver_id].append(low) if row[2] == 'low' else bots[receiver_id].append(high)
+        bots[id]['values'].append(value)
+        bots[id]['values'].sort()
 
-for bot in bots:
-    print(bot)
+
+while queue:
+    bot_id = queue.pop(0)
+    bot = bots[bot_id]
+
+    if len(bot['values']) < 2:
+        continue
+
+    low = min(bot['values'])
+    high = max(bot['values'])
+
+    if low == 17 and high == 61:
+        print(f'part 1: {bot_id}')
+
+    bot['values'].clear()
+
+    move_value(bot['low_receiver_type'], bot['low_receiver_id'], low)
+    move_value(bot['high_receiver_type'], bot['high_receiver_id'], high)
+
+    if bot['low_receiver_type'] == 'bot' and len(bots[bot['low_receiver_id']]['values']) == 2:
+        queue.append(bot['low_receiver_id'])
+
+    if bot['high_receiver_type'] == 'bot' and len(bots[bot['high_receiver_id']]['values']) == 2:
+        queue.append(bot['high_receiver_id'])
+
+
+print(f'part 2: {outputs[0][0] * outputs[1][0] * outputs[2][0]}')
