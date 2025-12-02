@@ -1,9 +1,12 @@
 import sys
 import math
 import bisect
-from math import gcd,floor,sqrt,log
-from collections import defaultdict as dd
+import re
+import hashlib
+from math import gcd,floor,sqrt,log, prod
+from collections import defaultdict as dd, deque
 from bisect import bisect_left as bl, bisect_right as br
+from datetime import datetime
 
 sys.setrecursionlimit(100000000)
 
@@ -16,91 +19,53 @@ mod=1000000007
 def get_input():
     filename = './input.txt'
     filename ='./test.txt'
-    with open(filename, 'r') as file: 
+    with open(filename, 'r') as file:
         input = []
-        for line in file: 
+        for line in file:
             line = line.replace('\n', '')
             line = line.replace('[', '')
-            datetime, event = line.split('] ')
-            date, time = datetime.split(' ')
-            hours, minutes = time.split(':')
-            year, month, day = date.split('-')
-            
-            event = event.replace('#', '')
-            input.append([[int(year), int(month), int(day)], [int(hours), int(minutes)], event.split(' ')])
+            line = line.replace('#', '')
+            date, info = line.split('] ')
+            date = datetime.strptime(date, "%Y-%m-%d %H:%M")
+            info = info.split(' ')
 
-        return input 
+            if info[0] == 'Guard':
+                info[1] = int(info[1])
+
+            event = {'time': date, 'info': info}
+            input.append(event)
+
+        input.sort(key=lambda x: x['time'])
+        return input
 
 input = get_input()
 # [print(row) for row in input]
 
-input = sorted(input, key=lambda x: (x[0], x[1], x[2]))
-# [print(row) for row in input]
+guards = []
+guard = {'id': None, 'events': []}
 
-def increment_time(time):
-    hours, minutes = time
-    minutes += 1
-    if minutes > 59:
-        if hours >= 23:
-            return [hours, minutes]
-        minutes = 0
-        hours += 1
-    
-    return [hours, minutes]
+for row in input:
+    if row['info'][0] == 'Guard':
+        if guard['id']:
+            guards.append(guard)
+        guard['id'] = row['info'][1]
+        guard['events'] = []
+    elif row['info'][0] == 'falls':
+        guard['events'].append(('sleep', row['time']))
+    elif row['info'][0] == 'wakes':
+        guard['events'].append(('wake', row['time']))
 
-def increment_date(date):
-    date[-1] += 1
-    return date
+guards.append(guard)
+max_time_asleep = 0
 
-def datetime_diff(d1, d2):
-    pass
+for g in guards:
+    time_asleep = 0
+    sleep_start = None
+    for i, e in enumerate(g['events']):
+        if e[0] == 'sleep':
+            sleep_start = e[1]
+        elif e[0] == 'wake' and sleep_start:
+            time_asleep += e[1] - sleep_start
+    max_time_asleep = max(time_asleep, max_time_asleep)
 
-
-guards = {}
-
-asleep = False
-guard_id = None
-for i, info in enumerate(input):
-    date, time, event = info
-    
-
-    if event[0] == 'falls':
-        asleep = True
-    elif event[0] == 'wakes':
-        asleep = False
-    else:
-        guard_id = event[1]
-        
-    if guard_id not in guards:
-        guards[guard_id] = dd(int)
-    
-    if i < len(input) - 2:    
-        next_date, next_time, next_event = input[i+1]
-    print(i+1, date, time, event)
-    
-    reached_next_event = False
-    while True:
-        if i < len(input) - 2 and time[0] <= next_time[0] and time[1] == next_time[1]:
-            print('next event')
-            # Reached time of next event
-            break
-        
-        if asleep:
-            guards[guard_id][f'{str(time[0])}{str(time[1])}'] += 1
-        time = increment_time(time)
-        if time[0] == 23 and time[1] > 59:
-            print(date, time, event)
-            date = increment_date(date)
-            time = [0, 0]
-    
-totals = {}
-
-for id, minutes in guards.items():
-    total = 0
-    
-    for count in minutes.values():
-        total += count
-    
-    totals[id] = total
-
-print(totals)
+print(max_time_asleep)

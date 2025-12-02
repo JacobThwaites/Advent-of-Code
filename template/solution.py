@@ -2,6 +2,7 @@ import sys
 import math
 import bisect
 import re
+import hashlib
 from math import gcd,floor,sqrt,log, prod
 from collections import defaultdict as dd, deque
 from bisect import bisect_left as bl, bisect_right as br
@@ -17,13 +18,13 @@ mod=1000000007
 def get_input():
     filename = './input.txt'
     filename ='./test.txt'
-    with open(filename, 'r') as file: 
+    with open(filename, 'r') as file:
         input = []
-        for line in file: 
+        for line in file:
             line = line.replace('\n', '')
             input.append(line)
 
-        return input 
+        return input
 
 input = get_input()
 [print(row) for row in input]

@@ -16,37 +16,37 @@ mod=1000000007
 def get_input():
     filename = './input.txt'
     filename ='./test.txt'
-    with open(filename, 'r') as file: 
-        for line in file: 
+    with open(filename, 'r') as file:
+        for line in file:
             line = line.replace('\n', '')
             line = line.split(', ')
             return [int(length) for length in line]
 
-input = get_input()
-# [print(row) for row in input]
+lengths = get_input()
+# print(lengths)
 
-curr = 0
-l = []
+curr_pos = 0
 skip_size = 0
 
-i = 0
+nums = []
 
-# list_length = 256
-list_length = 5
-while i < list_length:
-    l.append(i)
-    i += 1
 
-for length in input:
-    # TODO: handle wrapping for reverse
-    
-    sublist = l[curr:curr + length]
-    sublist.reverse()
-    l = sublist + l[length:]
-    
-    curr += length + skip_size
-    if curr >= len(l):
-        curr = curr % len(l)
+for i in range(5):
+    nums.append(i)
+
+for length in lengths:
+    end = curr_pos + length
+    if end >= len(nums):
+        offset = end - len(nums)
+    else:
+        offset = 0
+
+    subarray = nums[curr_pos:curr_pos+length]
+
+    if offset:
+        subarray += nums[:offset]
+
+    curr_pos += length + skip_size
+    if curr_pos >= len(nums):
+        curr_pos = curr_pos % len(nums)
     skip_size += 1
-
-    
