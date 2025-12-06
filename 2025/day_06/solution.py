@@ -42,13 +42,9 @@ for row in input:
     if row[-1] == '+':
         ans += sum(row[:-1])
     else:
-        total = 1
-        for val in row[:-1]:
-            total *= val
+        ans += prod(row[:-1])
 
-        ans += total
-
-# print(ans)
+print(ans)
 
 
 # Part 2
@@ -102,13 +98,8 @@ if curr_type != None:
 ans = 0
 for nums, calc in calcs:
     if calc == '+':
-        total = sum(nums)
-        ans += total
+        ans += sum(nums)
     else:
-        total = 1
-        for num in nums:
-            total *= num
-
-        ans += total
+        ans += prod(nums)
 
 print(ans)
