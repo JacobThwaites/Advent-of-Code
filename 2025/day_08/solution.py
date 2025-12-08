@@ -18,7 +18,7 @@ mod=1000000007
 
 def get_input():
     filename = './input.txt'
-    # filename ='./test.txt'
+    filename ='./test.txt'
     with open(filename, 'r') as file:
         input = []
         for line in file:
@@ -122,3 +122,46 @@ for d in sorted(list(distances.keys())):
 circuits.sort(key=lambda c : len(c.values()), reverse=True)
 
 print(prod([len(c) for c in circuits[:3]]))
+
+# Part 2
+
+def solve():
+    circuits = []
+
+    last_connection = None
+    for d in sorted(list(distances.keys())):
+        if len(circuits) == 1 and len(circuits[0]) == len(input):
+            break
+
+        a, b = distances[d]
+
+        last_connection = [a, b]
+
+        if both_exist(a, b, circuits):
+            if same_circuit(a, b, circuits):
+                continue
+
+            merge_circuits(a, b, circuits)
+
+        elif exists(a, circuits):
+            for c in circuits:
+                if a in c:
+                    c[a].append(b)
+                    c[b] = [a]
+                    break
+        elif exists(b, circuits):
+            for c in circuits:
+                if b in c:
+                    c[b].append(a)
+                    c[a] = [b]
+                    break
+        else:
+            circuit = {}
+            circuit[a] = [b]
+            circuit[b] = [a]
+            circuits.append(circuit)
+
+    return last_connection[0][0] * last_connection[1][0]
+
+ans = solve()
+print(ans)
